@@ -1,80 +1,139 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: "빠른 시작 가이드"
+description: "5분만에 카나페 이벤트와 제품을 연동하세요"
 ---
 
-## Get started in three steps
+## Step 1: 카나페 이벤트 iframe과 SDK 삽입
 
-Get your documentation site running locally and make your first customization.
+SDK를 카나페 이벤트 iframe과 같이 삽입해주세요
 
-### Step 1: Set up your local environment
+- `[EVENT_HASH]`: 카나페 이벤트의 고유 해시값
 
 <AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
+  <Accordion icon="rectangle-terminal" title="최신 버전 삽입">
+    ```javascript
+    <iframe
+      id="cue_[EVENT_HASH]"
+      src="https://canape.im/event/[EVENT_HASH]"
+      width="100%"
+      style="border: 0;"
+      allowfullscreen
+      onload="!function(e){const i='canape_embed_script';if(document.getElementById(i)){return;}let c=e.createElement('script');c.id=i;c.src='https://cdn.canape.im/_static/js/canape-url-embed.js?event_id=[EVENT_HASH]';e.head.append(c)}(document);"
+    ></iframe> // 카나페 에디터에서 복사한 iframe 링크
+    <script src="http://cdn.canape.im/@latest/canape-embed-helper.js"></script>
+    ```
   </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
+  <Accordion icon="rectangle-terminal" title="특정 버전 삽입">
+    ```javascript
+    <iframe
+      id="cue_[EVENT_HASH]"
+      src="https://canape.im/event/[EVENT_HASH]"
+      width="100%"
+      style="border: 0;"
+      allowfullscreen
+      onload="!function(e){const i='canape_embed_script';if(document.getElementById(i)){return;}let c=e.createElement('script');c.id=i;c.src='https://cdn.canape.im/_static/js/canape-url-embed.js?event_id=[EVENT_HASH]';e.head.append(c)}(document);"
+    ></iframe> // 카나페 에디터에서 복사한 iframe 링크
+    <script src="http://cdn.canape.im/@1.0.0/canape-embed-helper.js"></script>
+    ```
   </Accordion>
 </AccordionGroup>
 
-### Step 2: Deploy your changes
+## Step 2: SDK 초기화 (Initializing)
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+SDK를 초기화를 해주세요
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+```javascript
+<script>
+  if (window.CanapeEmbedHelper)
+  {CanapeEmbedHelper.init([EVENT_HASH], [TARGET_ORIGIN], [OPTION?])}
+</script>
+```
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+## Step 3-1: SDK를 사용한 초기화값 설정
 
-### Step 3: Go live
+SDK를 초기화하고 3번째 인자(option)에 초기화 값 오브젝트를 넣어주세요
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+```javascript
+<script>
+  if (window.CanapeEmbedHelper)
+  {CanapeEmbedHelper.init("hash", "*", {
+    signupSession: "session",
+    customUserId: "id",
+    isParticipationBlocked: true,
+    isForceNewSignupUser: false,
+  })}
+</script>
+```
 
-## Next steps
+## Step 3-2: 파라미터를 사용한 초기화값 설정
 
-Now that you have your docs running, explore these key features:
+파라미터를 사용하면 init 함수를 사용해 초기화 하는 것 보다 간단하고 빠르게 적용 가능하나
+파라미터값이 변경된다면 Iframe은 리렌더링 됩니다.
 
-<CardGroup cols={2}>
+<Tip>
+  3-1의 초기화값은 실제 이벤트가 렌더링되어 인터렉션 준비가 완료 되었을때 (`TTI`, `After component mount`) 값이
+  들어가지만 파라미터는 `Before component mount`전에 삽입되어 좋은 퍼포먼스를 낼 수 있습니다.
+</Tip>
+<Info>
+  주의사항
+  <br /> 1. 파라미터값이 동적으로 변경된다면 이벤트는 재실행됩니다. 삽입 후 파라미터 값을 변경하지 마세요
+  <br /> 2. Boolean값은 문자열 "true" 일떄만 `true`로 평가됩니다
+  <br /> 3. SDK의 초기값과 파라미터값을 동시에 넣게되면 충돌에 우려가 있으니 되도록 SDK 또는 파라미터 중 하나의 방법을 선택해
+  사용하시길 권장합니다. 만약 파라미터값과 SDK의 초기값이 동시에 들어간다면 **파라미터값이 우선평가됩니다.**
+</Info>
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+```javascript
+<iframe
+  id="cue_[EVENT_HASH]"
+  src="https://canape.im/event/[EVENT_HASH]?custom_user_id=[CUSTOM_USER_ID]&is_participation_blocked=true&signup_session=[SIGNUP_SESSION]&is_force_new_signup_user=true"
+  width="100%"
+  style="border: 0;"
+  allowfullscreen
+  onload="!function(e){const i='canape_embed_script';if(document.getElementById(i)){return;}let c=e.createElement('script');c.id=i;c.src='https://cdn.canape.im/_static/js/canape-url-embed.js?event_id=[EVENT_HASH]';e.head.append(c)}(document);"
+></iframe>
+```
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+## 프로퍼티 설명
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+- customUserId
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+<Info>**커스텀 사용자 ID는 고유해야 하며, 사용자를 식별할 수 있는 값이어야 합니다.**</Info>
 
-</CardGroup>
+`customUserId`는 카나페 이벤트 참여 시 참조 값이 되는 유니크한 ID입니다. 보통 고객의 회원 아이디 또는 해시 등 고유한 값이 사용되며
+이벤트 진행시 애널리틱스에서 참여자 정보를 식별하는 값으로도 활용됩니다.
+`undefined` , `null` , `""` 처럼 빈 값이 들어간다면 <b>비로그인</b>으로 간주되며, 에디터 내부에서 로그인 모달 표시 여부를
+활성화 한다면 비로그인 유저에게 로그인 안내창을 표시할 수 있습니다
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+```typescript
+customUserId?: string
+```
+
+- isParticipationBlocked
+
+임베드된 카나페 이벤트에 `isParticipationBlocked`가 `true`로 들어간다면 참여 조건 미충족 알림을 강제로 표시하게하고
+이벤트 참여를 제한할 수 있습니다. 보통 특정 조건을 만족하지 못한 유저에게 알림을 보여주기 위해 사용하며
+카나페 에디터 내부에서 해당 알림의 타이틀과 내용을 수정할 수 있습니다.
+
+```typescript
+isParticipationBlocked?: boolean
+```
+
+- signupSession
+
+`signupSession`은 카나페 에디터 내부에서 로그인 모달 표시 여부를 활성화한 상태에서 사용 가능합니다.
+`customUserId`의 값이 없는 유저는 비로그인 유저로 판단해 카나페는 로그인 모달을 보여주게 되고 유저가 로그인 버튼을 클릭한다면 에디터에서 미리 작성한 url으로
+이동하게 됩니다. 이때 카나페는 해당 유저에 세션값을 `?signup_session=` 파라미터와 임베드 postMessage의 `signupSession` 데이터로 전달해주고 해당 url에서
+회원가입 완료 후 해당 회원의 `customUserId`와 같이 부여받은 `signupSession`을 같이 넣게 된다면 카나페는 해당 유저를 신규 회원가입 유저로 판단할 수 있게됩니다.
+
+```typescript
+signupSession?: string
+```
+
+- isForceNewSignupUser
+
+`isForceNewSignupUser`가 `true` 라면 해당 이벤트를 플레이하는 유저를 카나페 이벤트가 신규 회원가입 유저로 판단합니다.
+보통 `signupSession`등 의 복잡한 처리 결과 없이 해당 이벤트를 플레이하는 유저가 신규 유저임을 확신할 수 있을 때 사용합니다.
+
+```typescript
+isForceNewSignupUser?: boolean
+```

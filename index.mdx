@@ -1,97 +1,19 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "카나페 커스텀 연동 시작하기"
 ---
 
-## Setting up
+## 개요
 
-Get your documentation site up and running in minutes.
+카나페 이벤트를 외부 웹사이트에 임베드하고 사용자 활동을 실시간으로 추적할 수 있습니다.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+이 문서에서 api 또는 webhook 연동 방법에 대해서는 다루지 않으며
+임베드 구현 방법과 파라미터 또는 임베드 메세지를 통한 이벤트 송수신 방법을 설명합니다.
 
-## Make it yours
+외부 웹사이트의 정보 송신은 iframe에 파라미터 삽입 또는 임베드 메세지(postMessage)로 구현되며<br/>
+카나페 이벤트로 부터의 정보 수신은 임베드 메세지(postMessage)로 구현됩니다.
 
-Design a docs site that looks great and empowers your users.
+## 사전 요구사항 및 주의사항
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+1. 카나페 개발팀이 커스텀 연동 기능을 카나페 제품 내부에서 활성화하고 등록해야지 정상적으로 문서의 내용을 토대로 개발이 가능합니다.
 
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+2. 카나페 에디터 내부에서 설정해야하는 옵션이 있는 경우가 있으며 해당 문서에도 꼼꼼히 작성했으나 사전에 미리 인지 해두시길 바랍니다.

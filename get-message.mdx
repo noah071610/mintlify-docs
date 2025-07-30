@@ -1,0 +1,153 @@
+---
+title: "카나페가 보낸 데이터 수신하기"
+---
+
+## 이벤트 데이터 수신
+
+카나페 이벤트에서 발생하는 다양한 이벤트 데이터를 수신할 수 있습니다.
+
+### 기본 이벤트 수신
+
+```typescript
+CanapeEmbedHelper.event.on(type: EventType, handler: (data: EventDataMap[EventType]) => void): void
+```
+
+### 이벤트 타입별 수신 방법
+
+#### viewed - 이벤트 조회
+
+카나페 이벤트가 조회(렌더링)되면 1회 발생합니다.
+
+```typescript
+CanapeEmbedHelper.event.on("viewed", (data) => {
+  console.log("이벤트 조회됨:", data.metadata)
+})
+```
+
+#### start_button_clicked - 시작 버튼 클릭
+
+이벤트 시작하기 버튼을 클릭하면 이벤트가 발생합니다.
+
+```typescript
+CanapeEmbedHelper.event.on("start_button_clicked", (data) => {
+  console.log("시작 버튼 클릭됨:", data.metadata)
+})
+```
+
+#### login_button_clicked - 로그인 버튼 클릭
+
+에디터 내부에서 로그인 모달 표시 여부를 활성화했고 `customUserId`값이 없는 상태의 유저라면
+이벤트 참여 시도시 로그인 모달이 표시됩니다. 로그인 모달에 로그인하기 버튼을 클릭하게 되면
+해당 이벤트가 발생됩니다.
+
+```typescript
+CanapeEmbedHelper.event.on("login_button_clicked", (data) => {
+  console.log("로그인 버튼 클릭됨:", data.metadata)
+  console.log("리다이렉트 URL:", data.url)
+  console.log("세션:", data.session)
+})
+```
+
+#### won - 리워드 수령
+
+이벤트를 성공적으로 참여해 리워드를 받았다면 해당 이벤트가 발생합니다.
+`rewardId`는 카나페가 해당 리워드에 할당한 고유한 ID값이며 에디터에서 확인이 가능합니다.
+
+```typescript
+CanapeEmbedHelper.event.on("won", (data) => {
+  console.log("당첨됨:", data.metadata)
+  console.log("리워드 ID:", data.rewardId)
+  console.log("리워드명:", data.rewardName)
+})
+```
+
+#### reward_form_submitted - 리워드 내부 정보입력 폼 제출
+
+에디터의 리워드 설정에서 추가정보 수집을 활성화 했다면, 리워드 표시 후 리워드 내부에 추가정보 입력창이 표시됩니다.
+유저가 추가정보 입력을 끝내고 마지막으로 제출 버튼을 클릭했다면 해당 이벤트가 발생합니다.
+
+```typescript
+CanapeEmbedHelper.event.on("reward_form_submitted", (data) => {
+  console.log("추가정보 입력 완료:", data.metadata)
+  console.log("주소:", data.address)
+  console.log("상세주소:", data.addressDetail)
+  console.log("우편번호:", data.postalCode)
+})
+```
+
+#### share_button_clicked - 공유 버튼 클릭
+
+리워드 수령 후 공유 버튼을 클릭했다면 이벤트가 발생합니다.
+공유 버튼 표시 여부는 에디터 내부에서 설정 가능합니다.
+
+```typescript
+CanapeEmbedHelper.event.on("share_button_clicked", (data) => {
+  console.log("공유 버튼 클릭됨:", data.metadata)
+  console.log("공유 플랫폼:", data.platform) // "FACEBOOK" | "KAKAO" | "LINE" | "LINK" | "MESSENGER" | "WHATSAPP" | "X"
+  console.log("공유 페이지:", data.page) // "GAME" | "REWARD"
+})
+```
+
+#### cta_button_clicked - CTA 버튼 클릭
+
+에디터에서 리워드 내부에 CTA버튼을 만들었다면 유저가 해당 CTA버튼 클릭시 이벤트가 발생합니다.
+
+```typescript
+CanapeEmbedHelper.event.on("cta_button_clicked", (data) => {
+  console.log("CTA 버튼 클릭됨:", data.metadata)
+  console.log("리다이렉트 URL:", data.url)
+})
+```
+
+#### share_and_restart - 공유하면 한 번 더 클릭
+
+에디터에서 공유하면 한 번 더 기능을 활성화 했고 유저가 리워드 수령 후 공유를 진행했다면
+보상으로 공유하면 한 번 더 버튼이 활성화 됩니다. 이 버튼을 클릭해서 이벤트를 한 번 더 참여하게 되면
+해당 이벤트가 발생합니다.
+
+```typescript
+CanapeEmbedHelper.event.on("share_and_restart", (data) => {
+  console.log("공유 후 재시작됨:", data.metadata)
+})
+```
+
+#### all - 모든 이벤트 수신
+
+```typescript
+CanapeEmbedHelper.event.on("all", (data) => {
+  console.log("이벤트 발생:", data.type)
+  console.log("메타데이터:", data.metadata)
+
+  // 이벤트 타입에 따른 추가 데이터
+  if (data.url) console.log("URL:", data.url)
+  if (data.session) console.log("세션:", data.session)
+  if (data.rewardId) console.log("상품 ID:", data.rewardId)
+  if (data.rewardName) console.log("상품명:", data.rewardName)
+  if (data.platform) console.log("공유 플랫폼:", data.platform)
+  if (data.page) console.log("공유 페이지:", data.page)
+  if (data.message) console.log("메시지:", data.message)
+})
+```
+
+### 이벤트 메타데이터 구조
+
+모든 이벤트 데이터에는 `metadata` 객체가 포함되어 있습니다:
+
+```typescript
+interface EventMetadata {
+  eventId: string // 이벤트 고유 ID
+  eventName: string // 이벤트 이름
+  time: string // 이벤트 발생 시간
+  referrer: string // Referrer
+  customUserId: string // 커스텀 사용자 ID
+  name?: string // 사용자 이름
+  email?: string // 사용자 이메일
+  phone?: string // 사용자 전화번호
+  additionalData1?: string // 추가 데이터
+  additionalData2?: string // 추가 데이터
+  signupSession?: string // 삽입한 signupSession 값
+  isNewSignupUser?: boolean // signupSession 또는 isForceNewSignupUser를 사용해 신규 회원가입 유저로 판단되면 이 값이 true가 됩니다
+  source: string // 이벤트 소스
+  status: string // 이벤트 상태
+}
+```

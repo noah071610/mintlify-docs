@@ -1,0 +1,154 @@
+---
+title: "타입스크립트 적용"
+description: "타입 안전성있는 코딩"
+---
+
+## Step 1: 타입스크립트 정의 파일 다운로드
+
+카나페 SDK의 타입 정의를 사용하기 위해 타입스크립트 정의 파일을 다운로드하세요.
+
+<AccordionGroup>
+  <Accordion icon="rectangle-terminal" title="curl을 사용한 다운로드">
+    ```bash
+    # 현재 디렉토리에 다운로드
+    curl -o CanapeEmbedHelper.d.ts http://cdn.canape.im/@latest/CanapeEmbedHelper.d.ts
+
+    # 또는 특정 디렉토리에 다운로드
+    curl -o ./types/CanapeEmbedHelper.d.ts http://cdn.canape.im/@latest/CanapeEmbedHelper.d.ts
+    ```
+
+  </Accordion>
+  <Accordion icon="rectangle-terminal" title="브라우저에서 직접 다운로드">
+    1. 브라우저에서 `http://cdn.canape.im/@latest/CanapeEmbedHelper.d.ts` 주소로 이동
+    2. 페이지 내용을 복사하거나 "다른 이름으로 저장" 기능 사용
+    3. 파일명을 `CanapeEmbedHelper.d.ts`로 저장
+  </Accordion>
+</AccordionGroup>
+
+## Step 2: 프로젝트에 타입 정의 파일 추가
+
+다운로드한 `CanapeEmbedHelper.d.ts` 파일을 프로젝트의 적절한 위치에 배치하세요.
+
+```
+your-project/
+├─ src/
+├─ types/
+│   └─ CanapeEmbedHelper.d.ts  # 여기에 배치
+├─ tsconfig.json
+└─ package.json
+```
+
+## Step 3: tsconfig.json 설정
+
+`tsconfig.json` 파일에서 타입 정의 파일을 포함하도록 설정하세요.
+
+```json
+{
+  "compilerOptions": {
+    "typeRoots": ["./types", "./node_modules/@types"],
+    ...
+  }
+}
+```
+
+## 참고 타입스크립트 예시 파일 (@latest)
+
+```typescript
+export {}
+
+type AnalyticsShareKindType = "FACEBOOK" | "KAKAO" | "LINE" | "LINK" | "MESSENGER" | "WHATSAPP" | "X"
+
+type AnalyticsShareRequestPageType = "GAME" | "REWARD"
+
+interface EventMetadata {
+  eventId: string
+  eventName: string
+  time: string
+  referrer: string
+  customUserId: string
+  name?: string
+  email?: string
+  phone?: string
+  additionalData1?: string
+  additionalData2?: string
+  signupSession?: string
+  isNewSignupUser?: boolean
+
+  source: string
+  status: string
+}
+
+type EventType =
+  | "all"
+  | "viewed"
+  | "start_button_clicked"
+  | "login_button_clicked"
+  | "won"
+  | "reward_form_submitted"
+  | "share_button_clicked"
+  | "cta_button_clicked"
+  | "share_and_restart"
+
+interface DefaultEventData {
+  metadata?: EventMetadata
+  type: EventType
+}
+
+type EventDataMap = {
+  viewed: DefaultEventData
+  start_button_clicked: DefaultEventData
+
+  login_button_clicked: DefaultEventData & { url: string; session: string }
+  won: DefaultEventData & { rewardId: string; rewardName: string }
+  reward_form_submitted: DefaultEventData & {
+    address?: string
+    addressDetail?: string
+    postalCode?: string
+  }
+  share_button_clicked: DefaultEventData & {
+    platform: AnalyticsShareKindType
+    page: AnalyticsShareRequestPageType
+  }
+  cta_button_clicked: DefaultEventData & { url: string }
+  share_and_restart: DefaultEventData
+
+  all: DefaultEventData & {
+    url?: string
+    session?: string
+    rewardId?: string
+    rewardName?: string
+    address?: string
+    addressDetail?: string
+    postalCode?: string
+    platform?: AnalyticsShareKindType
+    page?: AnalyticsShareRequestPageType
+    message?: string
+  }
+}
+
+type InitializeData = {
+  customUserId?: string | null
+  signupSession?: string | null
+  isParticipationBlocked?: boolean | null
+  isForceNewSignupUser?: boolean | null
+}
+
+declare global {
+  interface Window {
+    CanapeEmbedHelper: {
+      init: (hash: string, origin: string, initializeData?: InitializeData) => void
+      event: {
+        send(type: "customUserId", data: string): void
+        send(type: "signupSession", data: string): void
+        send(type: "isParticipationBlocked", data: boolean): void
+        send(type: "initializeData", data: InitializeData): void
+
+        on: <T extends EventType>(type: T, handler: (data: EventDataMap[T]) => void) => void
+        set: (object: { customUserId?: string; isParticipationBlocked?: boolean; signupSession?: string }) => void
+      }
+    }
+  }
+}
+```
+
+이제 타입스크립트에서 카나페 SDK의 타입 안전성을 확보하여 개발할 수 있습니다!
