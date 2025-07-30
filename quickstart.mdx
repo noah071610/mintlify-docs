@@ -1,11 +1,11 @@
 ---
 title: "빠른 시작 가이드"
-description: "5분만에 카나페 이벤트와 제품을 연동하세요"
+description: "카나페 이벤트와 제품을 빠르게 연동해보세요"
 ---
 
 ## Step 1: 카나페 이벤트 iframe과 SDK 삽입
 
-SDK를 카나페 이벤트 iframe과 같이 삽입해주세요
+SDK를 카나페 이벤트 iframe과 같이 삽입해 주세요
 
 - `[EVENT_HASH]`: 카나페 이벤트의 고유 해시값
 
@@ -45,13 +45,13 @@ SDK를 초기화를 해주세요
 ```javascript
 <script>
   if (window.CanapeEmbedHelper)
-  {CanapeEmbedHelper.init([EVENT_HASH], [TARGET_ORIGIN], [OPTION?])}
+  {CanapeEmbedHelper.init([EVENT_HASH], [TARGET_ORIGIN], [INITIAL_DATA?])}
 </script>
 ```
 
 ## Step 3-1: SDK를 사용한 초기화값 설정
 
-SDK를 초기화하고 3번째 인자(option)에 초기화 값 오브젝트를 넣어주세요
+SDK를 초기화하고 3번째 인자(initial data)에 초기화 값 오브젝트를 넣어주세요
 
 ```javascript
 <script>
@@ -64,6 +64,8 @@ SDK를 초기화하고 3번째 인자(option)에 초기화 값 오브젝트를 �
   })}
 </script>
 ```
+
+<Info>보안을 위해 2번째 인자의 origin을 꼭 확인해주세요</Info>
 
 ## Step 3-2: 파라미터를 사용한 초기화값 설정
 

@@ -1,20 +1,17 @@
 ---
 title: "카나페가 보낸 데이터 수신하기"
+description: "카나페 이벤트에서 발생하는 다양한 이벤트 데이터를 수신해보세요"
 ---
 
-## 이벤트 데이터 수신
-
-카나페 이벤트에서 발생하는 다양한 이벤트 데이터를 수신할 수 있습니다.
-
-### 기본 이벤트 수신
+## 이벤트 수신 정의
 
 ```typescript
 CanapeEmbedHelper.event.on(type: EventType, handler: (data: EventDataMap[EventType]) => void): void
 ```
 
-### 이벤트 타입별 수신 방법
+## 이벤트 타입별 수신 방법
 
-#### viewed - 이벤트 조회
+### viewed - 이벤트 조회
 
 카나페 이벤트가 조회(렌더링)되면 1회 발생합니다.
 
@@ -24,7 +21,7 @@ CanapeEmbedHelper.event.on("viewed", (data) => {
 })
 ```
 
-#### start_button_clicked - 시작 버튼 클릭
+### start_button_clicked - 시작 버튼 클릭
 
 이벤트 시작하기 버튼을 클릭하면 이벤트가 발생합니다.
 
@@ -34,10 +31,10 @@ CanapeEmbedHelper.event.on("start_button_clicked", (data) => {
 })
 ```
 
-#### login_button_clicked - 로그인 버튼 클릭
+### login_button_clicked - 로그인 버튼 클릭
 
 에디터 내부에서 로그인 모달 표시 여부를 활성화했고 `customUserId`값이 없는 상태의 유저라면
-이벤트 참여 시도시 로그인 모달이 표시됩니다. 로그인 모달에 로그인하기 버튼을 클릭하게 되면
+이벤트 참여 시도 시 로그인 모달이 표시됩니다. 로그인 모달에 로그인하기 버튼을 클릭하게 되면
 해당 이벤트가 발생됩니다.
 
 ```typescript
@@ -48,7 +45,7 @@ CanapeEmbedHelper.event.on("login_button_clicked", (data) => {
 })
 ```
 
-#### won - 리워드 수령
+### won - 리워드 수령
 
 이벤트를 성공적으로 참여해 리워드를 받았다면 해당 이벤트가 발생합니다.
 `rewardId`는 카나페가 해당 리워드에 할당한 고유한 ID값이며 에디터에서 확인이 가능합니다.
@@ -61,21 +58,21 @@ CanapeEmbedHelper.event.on("won", (data) => {
 })
 ```
 
-#### reward_form_submitted - 리워드 내부 정보입력 폼 제출
+### reward_form_submitted - 리워드 내부 정보 입력 폼 제출
 
-에디터의 리워드 설정에서 추가정보 수집을 활성화 했다면, 리워드 표시 후 리워드 내부에 추가정보 입력창이 표시됩니다.
-유저가 추가정보 입력을 끝내고 마지막으로 제출 버튼을 클릭했다면 해당 이벤트가 발생합니다.
+에디터의 리워드 설정에서 추가 정보 수집을 활성화 했다면, 리워드 표시 후 리워드 내부에 추가 정보 입력창이 표시됩니다.
+유저가 추가 정보 입력을 끝내고 마지막으로 제출 버튼을 클릭했다면 해당 이벤트가 발생합니다.
 
 ```typescript
 CanapeEmbedHelper.event.on("reward_form_submitted", (data) => {
-  console.log("추가정보 입력 완료:", data.metadata)
+  console.log("추가 정보 입력 완료:", data.metadata)
   console.log("주소:", data.address)
-  console.log("상세주소:", data.addressDetail)
+  console.log("상세 주소:", data.addressDetail)
   console.log("우편번호:", data.postalCode)
 })
 ```
 
-#### share_button_clicked - 공유 버튼 클릭
+### share_button_clicked - 공유 버튼 클릭
 
 리워드 수령 후 공유 버튼을 클릭했다면 이벤트가 발생합니다.
 공유 버튼 표시 여부는 에디터 내부에서 설정 가능합니다.
@@ -88,9 +85,9 @@ CanapeEmbedHelper.event.on("share_button_clicked", (data) => {
 })
 ```
 
-#### cta_button_clicked - CTA 버튼 클릭
+### cta_button_clicked - CTA 버튼 클릭
 
-에디터에서 리워드 내부에 CTA버튼을 만들었다면 유저가 해당 CTA버튼 클릭시 이벤트가 발생합니다.
+에디터에서 리워드 내부에 CTA 버튼을 만들었다면 유저가 해당 CTA 버튼 클릭 시 이벤트가 발생합니다.
 
 ```typescript
 CanapeEmbedHelper.event.on("cta_button_clicked", (data) => {
@@ -99,7 +96,7 @@ CanapeEmbedHelper.event.on("cta_button_clicked", (data) => {
 })
 ```
 
-#### share_and_restart - 공유하면 한 번 더 클릭
+### share_and_restart - 공유하면 한 번 더 클릭
 
 에디터에서 공유하면 한 번 더 기능을 활성화 했고 유저가 리워드 수령 후 공유를 진행했다면
 보상으로 공유하면 한 번 더 버튼이 활성화 됩니다. 이 버튼을 클릭해서 이벤트를 한 번 더 참여하게 되면
@@ -111,7 +108,7 @@ CanapeEmbedHelper.event.on("share_and_restart", (data) => {
 })
 ```
 
-#### all - 모든 이벤트 수신
+### all - 모든 이벤트 수신
 
 ```typescript
 CanapeEmbedHelper.event.on("all", (data) => {
@@ -129,7 +126,7 @@ CanapeEmbedHelper.event.on("all", (data) => {
 })
 ```
 
-### 이벤트 메타데이터 구조
+## 이벤트 메타데이터 구조
 
 모든 이벤트 데이터에는 `metadata` 객체가 포함되어 있습니다:
 
