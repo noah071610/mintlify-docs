@@ -1,13 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Canape Developers",
   "colors": {
     "primary": "#8852DD",
     "light": "#B08CE8",
     "dark": "#512596"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "navigation": {
     "tabs": [
       {
@@ -29,7 +29,7 @@
         {
           "anchor": "카나페 홈페이지",
           "href": "https://home.canape.im",
-          "icon": "book-open-cover"
+          "icon": "house"
         },
 
         {
@@ -48,20 +48,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:contact@canape.im"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "label": "만들러가기",
+      "href": "https://canape.im/"
     }
   }
 }
