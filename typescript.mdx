@@ -139,7 +139,6 @@ declare global {
         send(type: "customUserId", data: string): void
         send(type: "signupSession", data: string): void
         send(type: "isParticipationBlocked", data: boolean): void
-        send(type: "initializeData", data: InitializeData): void
 
         on: <T extends EventType>(type: T, handler: (data: EventDataMap[T]) => void) => void
         set: (object: { customUserId?: string; isParticipationBlocked?: boolean; signupSession?: string }) => void
