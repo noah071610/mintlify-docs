@@ -5,21 +5,21 @@ description: "타입 안전성있게 개발하세요"
 
 ## Step 1: 타입스크립트 정의 파일 다운로드
 
-카나페 SDK의 타입 정의를 사용하기 위해 타입스크립트 정의 파일을 다운로드하세요.
+카나페 SDK의 타입 정의를 사용하기 위해 curl를 사용하여 타입스크립트 정의 파일을 다운로드하세요.
 
 <AccordionGroup>
   <Accordion icon="rectangle-terminal" title="curl을 사용한 다운로드">
     ```bash
     # 현재 디렉토리에 다운로드
-    curl -o CanapeEmbedHelper.d.ts http://cdn.canape.im/@latest/CanapeEmbedHelper.d.ts
+    curl -o CanapeEmbedHelper.d.ts https://cdn.canape.im/_static/js/canape-embed-helper/@latest/CanapeEmbedHelper.d.ts
 
     # 또는 특정 디렉토리에 다운로드
-    curl -o ./types/CanapeEmbedHelper.d.ts http://cdn.canape.im/@latest/CanapeEmbedHelper.d.ts
+    curl -o ./types/CanapeEmbedHelper.d.ts https://cdn.canape.im/_static/js/canape-embed-helper/@latest/CanapeEmbedHelper.d.ts
     ```
 
   </Accordion>
   <Accordion icon="rectangle-terminal" title="브라우저에서 직접 다운로드">
-    다운로드 링크 삽입 예정
+    <a href="https://cdn.canape.im/_static/js/canape-embed-helper/@latest/CanapeEmbedHelper.d.ts">파일 다운로드</a>
   </Accordion>
 </AccordionGroup>
 
@@ -92,7 +92,7 @@ interface DefaultEventData {
   type: EventType
 }
 
-type EventDataMap = {
+export type EventDataMap = {
   viewed: DefaultEventData
   start_button_clicked: DefaultEventData
 
@@ -124,24 +124,40 @@ type EventDataMap = {
   }
 }
 
-type InitializeData = {
+export type InitializeData = {
   customUserId?: string | null
   signupSession?: string | null
   isParticipationBlocked?: boolean | null
   isForceNewSignupUser?: boolean | null
 }
 
+export type EventHandler = (data: DefaultEventData) => void
+
+export type EventSetDataType = {
+  customUserId?: string
+  isParticipationBlocked?: boolean
+  signupSession?: string
+}
+
+export interface CanapeEmbedHelperProvider {
+  init: (origin: string, initializeData?: InitializeData) => void
+  event: {
+    send(type: "customUserId", data: string): void
+    send(type: "signupSession", data: string): void
+    send(type: "isParticipationBlocked", data: boolean): void
+
+    on: <T extends EventType>(type: T, handler: (data: EventDataMap[T]) => void) => void
+    set: (object: EventSetDataType) => void
+  }
+}
+
 declare global {
   interface Window {
-    CanapeEmbedHelper: {
-      init: (hash: string, origin: string, initializeData?: InitializeData) => void
-      event: {
-        send(type: "customUserId", data: string): void
-        send(type: "signupSession", data: string): void
-        send(type: "isParticipationBlocked", data: boolean): void
-
-        on: <T extends EventType>(type: T, handler: (data: EventDataMap[T]) => void) => void
-        set: (object: { customUserId?: string; isParticipationBlocked?: boolean; signupSession?: string }) => void
+    CanapeEmbedHelper: CanapeEmbedHelperProvider
+    CanapeEmbedHelperInstances: {
+      eventHashList: string[]
+      instances: {
+        [key: string]: CanapeEmbedHelperProvider
       }
     }
   }

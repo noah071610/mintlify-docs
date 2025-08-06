@@ -19,7 +19,7 @@
           },
           {
             "group": "Guide",
-            "pages": ["quickstart", "typescript", "send-message", "get-message", "example"]
+            "pages": ["quickstart", "typescript", "send-message", "get-message", "multiple-event"]
           }
         ]
       }

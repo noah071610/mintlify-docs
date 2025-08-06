@@ -20,7 +20,10 @@ SDK를 카나페 이벤트 iframe과 같이 삽입해 주세요
       allowfullscreen
       onload="!function(e){const i='canape_embed_script';if(document.getElementById(i)){return;}let c=e.createElement('script');c.id=i;c.src='https://cdn.canape.im/_static/js/canape-url-embed.js?event_id=[EVENT_HASH]';e.head.append(c)}(document);"
     ></iframe> // 카나페 에디터에서 복사한 iframe 링크
-    <script src="http://cdn.canape.im/@latest/canape-embed-helper.js"></script>
+    <script
+      async
+      src="https://cdn.canape.im/_static/js/canape-embed-helper/@latest/canape-embed-helper.js?event_id=[EVENT_HASH]"
+    ></script>
     ```
   </Accordion>
   <Accordion icon="rectangle-terminal" title="특정 버전 삽입">
@@ -33,7 +36,10 @@ SDK를 카나페 이벤트 iframe과 같이 삽입해 주세요
       allowfullscreen
       onload="!function(e){const i='canape_embed_script';if(document.getElementById(i)){return;}let c=e.createElement('script');c.id=i;c.src='https://cdn.canape.im/_static/js/canape-url-embed.js?event_id=[EVENT_HASH]';e.head.append(c)}(document);"
     ></iframe> // 카나페 에디터에서 복사한 iframe 링크
-    <script src="http://cdn.canape.im/@1.0.0/canape-embed-helper.js"></script>
+    <script
+      async
+      src="https://cdn.canape.im/_static/js/canape-embed-helper/@latest/canape-embed-helper.js?event_id=[EVENT_HASH]"
+    ></script>
     ```
   </Accordion>
 </AccordionGroup>
@@ -43,26 +49,24 @@ SDK를 카나페 이벤트 iframe과 같이 삽입해 주세요
 SDK를 초기화를 해주세요
 
 ```javascript
-<script>
-  if (window.CanapeEmbedHelper)
-  {CanapeEmbedHelper.init([EVENT_HASH], [TARGET_ORIGIN], [INITIAL_DATA?])}
-</script>
+if (window.CanapeEmbedHelper) {
+  CanapeEmbedHelper.init([TARGET_ORIGIN], [INITIAL_DATA?]);
+}
 ```
 
 ## Step 3-1: SDK를 사용한 초기화값 설정
 
-SDK를 초기화하고 3번째 인자(initial data)에 초기화 값 오브젝트를 넣어주세요
+SDK를 초기화하고 2번째 인자(initial data)에 초기화 값 오브젝트를 넣어주세요
 
 ```javascript
-<script>
-  if (window.CanapeEmbedHelper)
-  {CanapeEmbedHelper.init("hash", "*", {
+if (window.CanapeEmbedHelper) {
+  CanapeEmbedHelper.init("*", {
     signupSession: "session",
     customUserId: "id",
     isParticipationBlocked: true,
     isForceNewSignupUser: false,
-  })}
-</script>
+  })
+}
 ```
 
 <Info>보안을 위해 2번째 인자의 origin을 꼭 확인해주세요</Info>
