@@ -18,8 +18,12 @@
             "pages": ["index"]
           },
           {
-            "group": "Guide",
+            "group": "Canape Integration Guide",
             "pages": ["quickstart", "typescript", "send-message", "get-message", "multiple-event"]
+          },
+          {
+            "group": "Other Integrations",
+            "pages": ["google-analytics"]
           }
         ]
       }
